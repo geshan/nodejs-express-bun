@@ -1,11 +1,8 @@
-FROM node:14-alpine as base
-
-WORKDIR /src
-COPY package*.json ./
+FROM jarredsumner/bun:edge
+WORKDIR /app
+COPY package.json package.json
+COPY bun.lockb bun.lockb
+RUN bun install
+COPY . .
 EXPOSE 3000
-
-FROM base as production
-ENV NODE_ENV=production
-RUN npm ci
-COPY . ./
-CMD ["node", "index.js"]
+ENTRYPOINT ["bun", "index.js"]
